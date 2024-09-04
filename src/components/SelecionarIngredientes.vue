@@ -12,7 +12,8 @@ export default {
     async created(){
         this.categorias = await obterCategorias()
     },
-    components: {CardCategoria}
+    components: {CardCategoria},
+    emits: ['adicionarIngrediente', 'removerIngrediente']
 }
 </script>
 
@@ -26,7 +27,10 @@ export default {
 
         <ul class="categorias">
             <li v-for="categoria in categorias" v-bind:key="categoria.nome">
-                <CardCategoria :categoria="categoria"/>
+                <CardCategoria :categoria="categoria"
+                    @adicionar-ingrediente="$emit('adicionarIngrediente', $event)"
+                    @remover-ingrediente="$emit('removerIngrediente', $event)"/>
+                    <!-- $event é o ingrediente que está sendo carregado pelo evento -->
             </li>
         </ul>
 
