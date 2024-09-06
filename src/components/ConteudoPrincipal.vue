@@ -1,14 +1,18 @@
 <script lang="ts">
 import SelecionarIngredientes from './SelecionarIngredientes.vue'
 import Tag from './Tag.vue'
+import MostrarReceitas from './MostrarReceitas.vue'
+
+type Pagina = 'SelecionarIngredientes' | 'MostrarReceitas'
 
 export default {
     data(){
         return {
-            ingredientes : [] as string[]
+            ingredientes : [] as string[],
+            conteudo: 'SelecionarIngredientes' as Pagina
         }
     },
-    components: {SelecionarIngredientes, Tag},
+    components: {SelecionarIngredientes, Tag, MostrarReceitas},
     methods:{
       adicionarIngrediente(ingrediente: string){
         this.ingredientes.push(ingrediente);
@@ -20,6 +24,10 @@ export default {
         var indice = this.ingredientes.indexOf(ingrediente);
         
         if(indice !== -1) this.ingredientes.splice(indice, QUANTIDADE_ELEMENTOS_REMOVIDOS);
+      },
+
+      navegar(pagina: Pagina){
+        this.conteudo = pagina
       }
     }
 }
@@ -44,9 +52,12 @@ export default {
             </p>
         </section>
 
-        <SelecionarIngredientes
+        <SelecionarIngredientes v-if="conteudo === 'SelecionarIngredientes'"
           @adicionar-ingrediente="adicionarIngrediente"
-          @remover-ingrediente="removerIngrediente"/>
+          @remover-ingrediente="removerIngrediente"
+          @buscar-receitas="navegar('MostrarReceitas')"/>
+
+        <MostrarReceitas v-else-if="conteudo == 'MostrarReceitas'"/>
     </main>
 </template>
 
