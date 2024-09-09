@@ -5,6 +5,7 @@ import type ICategoria from "@/Interfaces/ICategorias";
 import { obterCategorias } from "@/http/index"
 
 export default {
+    name: 'SelecionarIngredientes',
     data(){
         return{
             categorias: [] as ICategoria[]
