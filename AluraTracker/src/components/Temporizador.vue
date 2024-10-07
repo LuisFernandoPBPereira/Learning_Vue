@@ -1,30 +1,30 @@
 <template>
     <div class="is-flex is-align-itens-center is-justify-content-space-between">
         <Cronometro :tempoEmSegundos="tempoEmSegundos" />
-        <button class="button" @click="iniciar" :disabled="cronometroDisparado">
-            <span class="icon">
-                <i class="fas fa-play"></i>
-            </span>
-            <span>play</span>
-        </button>
-        <button class="button" @click="finalizar" :disabled="!cronometroDisparado">
-            <span class="icon">
-                <i class="fas fa-stop"></i>
-            </span>
-            <span>stop</span>
-        </button>
+        <Botao :nomeDoBotao="'play'" 
+               :eventoDoBotao="iniciar" 
+               :cronometroDisparado="cronometroDisparado"
+               :icone="'fa-play'"
+               />
+        <Botao :nomeDoBotao="'stop'" 
+               :eventoDoBotao="finalizar" 
+               :cronometroDisparado="!cronometroDisparado"
+               :icone="'fa-stop'"
+               />
     </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
 import Cronometro from './Cronometro.vue';
+import Botao from './Botao.vue';
 
 export default defineComponent({
     name: 'Temporizador',
     emits: ['aoFinalizarTemporizador'],
     components: {
-        Cronometro
+        Cronometro,
+        Botao
     },
     data() {
         return {
@@ -39,6 +39,7 @@ export default defineComponent({
             this.cronometro = setInterval(() => {
                 this.tempoEmSegundos++;
             }, 1000);
+            console.log("oi");
         },
         finalizar() {
             this.cronometroDisparado = false;
