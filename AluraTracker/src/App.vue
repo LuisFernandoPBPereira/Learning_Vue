@@ -8,6 +8,7 @@
       <Formulario @aoSalvarTarefa="salvarTarefa"/>
       <div class="lista">
         <Tarefa v-for="(tarefa, index) in tarefas" :key="index" :tarefa="tarefa"/>
+        <strong v-if="tarefas.length === 0">NÃO HÁ TAREFAS INICIADAS</strong>
       </div>
     </div>
   </main>
