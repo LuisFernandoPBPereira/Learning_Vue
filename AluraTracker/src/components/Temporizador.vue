@@ -14,10 +14,11 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
 import Cronometro from './Cronometro.vue';
 import Botao from './Botao.vue';
+import type ITemporizador from '@/interfaces/ITemporizador';
 
 export default defineComponent({
     name: 'Temporizador',
@@ -26,7 +27,7 @@ export default defineComponent({
         Cronometro,
         Botao
     },
-    data() {
+    data() : ITemporizador{
         return {
             tempoEmSegundos: 0,
             cronometro: 0,
@@ -34,14 +35,13 @@ export default defineComponent({
         }
     },
     methods: {
-        iniciar() {
+        iniciar() : void{
             this.cronometroDisparado = true;
             this.cronometro = setInterval(() => {
                 this.tempoEmSegundos++;
             }, 1000);
-            console.log("oi");
         },
-        finalizar() {
+        finalizar() : void{
             this.cronometroDisparado = false;
             clearInterval(this.cronometro);
             this.$emit('aoFinalizarTemporizador', this.tempoEmSegundos);

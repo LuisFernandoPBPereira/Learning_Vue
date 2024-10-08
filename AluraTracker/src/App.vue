@@ -34,7 +34,9 @@ export default defineComponent({
   },
   methods:{
     salvarTarefa(tarefa: ITarefa){
-      this.tarefas.push(tarefa);
+      if(tarefa.descricao !== ''){
+        this.tarefas.push(tarefa);
+      }
     }
   }
 })

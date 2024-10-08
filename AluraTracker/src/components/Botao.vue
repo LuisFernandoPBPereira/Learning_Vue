@@ -8,13 +8,13 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {defineComponent, type PropType} from 'vue'
 
 export default defineComponent({
     name: 'Botao',
     props:{
         eventoDoBotao: {
-            type: Function,
+            type: Function as PropType<(tipo: MouseEvent) => void>,
             required: true
         },
         cronometroDisparado:{
