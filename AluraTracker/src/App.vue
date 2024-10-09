@@ -1,8 +1,8 @@
 
 <template>
-  <main class="columns is-gapless is-multiline modo-escuro">
+  <main class="columns is-gapless is-multiline" :class="{ 'modo-escuro': modoEscuro }">
     <div class="column is-one-quarter">
-      <BarraLateral/>
+      <BarraLateral @AoAlterarTema="trocarTema"/>
     </div>
     <div class="column is-three-quarter conteudo">
       <Formulario @aoSalvarTarefa="salvarTarefa"/>
@@ -14,33 +14,25 @@
   </main>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import BarraLateral from './components/BarraLateral.vue'
 import Formulario from './components/Formulario.vue'
 import Tarefa from './components/Tarefa.vue'
 import type ITarefa from './interfaces/ITarefa'
-import { defineComponent } from 'vue';
+import { ref } from 'vue';
 
-export default defineComponent({
-  name: 'App',
-  components:{
-    BarraLateral,
-    Formulario,
-    Tarefa
-  },
-  data(){
-    return{
-      tarefas: [] as ITarefa[]
-    }
-  },
-  methods:{
-    salvarTarefa(tarefa: ITarefa){
-      if(tarefa.descricao !== ''){
-        this.tarefas.push(tarefa);
-      }
-    }
+let tarefas = ref([] as ITarefa[]);
+let modoEscuro = ref(false);
+
+function salvarTarefa (tarefa: ITarefa){
+  if(tarefa.descricao !== ''){
+      tarefas.value.push(tarefa);
   }
-})
+}
+
+function trocarTema(modoEscuroAtivo: boolean){
+  modoEscuro.value = modoEscuroAtivo
+}
 </script>
 
 <style>
