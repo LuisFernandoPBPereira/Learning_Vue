@@ -14,7 +14,7 @@
 import BarraLateral from './components/BarraLateral.vue'
 import { ref } from 'vue';
 
-let modoEscuro = ref(false);
+let modoEscuro = ref(true);
 
 function trocarTema(modoEscuroAtivo: boolean){
   modoEscuro.value = modoEscuroAtivo
@@ -39,5 +39,35 @@ main.modo-escuro{
 .conteudo{
   background-color: var(--bg-primario);
   color: var(--texto-primario) ;
+}
+
+.button{
+  background-color: #2b2d42;
+}
+
+.input{
+  background-color: #fff;
+  color: #000;
+}
+
+.input::placeholder{
+  color: #000;
+}
+
+.table{
+  background-color: transparent;
+}
+
+.table td{
+  color: var(--texto-primario);
+}
+
+.table thead th{
+  color: var(--texto-primario);
+}
+
+.input, .select select, .textarea{
+  background-color: #fff;
+  color: #000;
 }
 </style>
