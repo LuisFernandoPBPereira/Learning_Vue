@@ -1,8 +1,11 @@
 <template>
     <div v-if="tarefa?.descricao !== ''" class="box has-text-weight-bold">
         <div class="columns">
-            <div class="column is-7">
-                {{tarefa?.descricao}}
+            <div class="column is-4">
+                {{tarefa?.descricao || 'Tarefa sem descrição'}}
+            </div>
+            <div class="column is-3">
+                {{ tarefa?.projeto?.nome || 'N/D' }}
             </div>
             <div class="column">
                 <Cronometro :tempoEmSegundos="tarefa?.duracaoEmSegundos"/>

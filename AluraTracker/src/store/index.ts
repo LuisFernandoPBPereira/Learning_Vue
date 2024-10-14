@@ -2,34 +2,15 @@ import type IProjeto from "@/interfaces/IProjeto";
 import type Estado from "@/interfaces/Estado";
 import type { InjectionKey } from "vue";
 import { Store, createStore, useStore as vuexUseStore } from "vuex";
-import { ADICIONA_PROJETO, ALTERA_PROJETO, EXCLUIR_PROJETO } from "./tipo-mutacoes";
-import { TipoNotificacao } from "@/interfaces/INotificacao";
+import { ADICIONA_PROJETO, ALTERA_PROJETO, EXCLUIR_PROJETO, NOTIFICAR } from "./tipo-mutacoes";
+import type { INotificacao } from "@/interfaces/INotificacao";
 
 export const key: InjectionKey<Store<Estado>> = Symbol();
 
 export const store = createStore<Estado>({
     state:{
         projetos: [],
-        notificacoes: [
-            {
-                id: 1,
-                texto: 'Uma notificação de sucesso',
-                titulo: 'sucesso',
-                tipo: TipoNotificacao.SUCESSO
-            },
-            {
-                id: 2,
-                texto: 'Uma notificação de atenção',
-                titulo: 'atenção',
-                tipo: TipoNotificacao.ATENCAO
-            },
-            {
-                id: 3,
-                texto: 'Uma notificação de falha',
-                titulo: 'falha',
-                tipo: TipoNotificacao.FALHA
-            },
-        ]
+        notificacoes: []
     },
     mutations:{
         [ADICIONA_PROJETO](state : any, nomeDoProjeto: string){            
@@ -46,6 +27,14 @@ export const store = createStore<Estado>({
         },
         [EXCLUIR_PROJETO](state: any, projetoId: string){
             state.projetos = state.projetos.filter((proj: { id: string; }) => proj.id != projetoId)
+        },
+        [NOTIFICAR](state: any, novaNotificacao: INotificacao){
+            novaNotificacao.id = new Date().getTime()
+            state.notificacoes.push(novaNotificacao);
+
+            setTimeout(() => {
+                state.notificacoes = state.notificacoes.filter((notificacao: { id: number; }) => notificacao.id != novaNotificacao.id)
+            }, 3000)
         }
     }
 });
