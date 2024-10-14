@@ -1,7 +1,7 @@
 <template>
     <div class="projetos">
         <h1 class="title">Projetos</h1>
-        <RouterView></RouterView>
+        <RouterView/>
     </div>
 </template>
 

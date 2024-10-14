@@ -35,7 +35,7 @@ export default defineComponent({
     emits: ['aoAlterarTema'],
     data() {
         return {
-            modoEscuroAtivo: false
+            modoEscuroAtivo: true
         }
     },
     computed: {

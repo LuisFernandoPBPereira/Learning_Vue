@@ -5,6 +5,7 @@
       <BarraLateral @AoAlterarTema="trocarTema"/>
     </div>
     <div class="column is-three-quarter conteudo">
+      <Notificacoes/>
       <RouterView></RouterView>
     </div>
   </main>
@@ -13,6 +14,7 @@
 <script setup lang="ts">
 import BarraLateral from './components/BarraLateral.vue'
 import { ref } from 'vue';
+import Notificacoes from './components/Notificacoes.vue';
 
 let modoEscuro = ref(true);
 
@@ -39,10 +41,6 @@ main.modo-escuro{
 .conteudo{
   background-color: var(--bg-primario);
   color: var(--texto-primario) ;
-}
-
-.button{
-  background-color: #2b2d42;
 }
 
 .input{
