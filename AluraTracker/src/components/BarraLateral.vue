@@ -5,7 +5,7 @@
         </h1>
         <div class="has-text-centered">
             <button class="button" @click="alterarTema">
-                {{ textoDoBotao }}
+                {{ botao.textoDoBotao() }}
             </button>
         </div>
         <nav class="panel mt-5">
@@ -27,33 +27,55 @@
     </header>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { reactive } from 'vue';
+import { ref } from 'vue';
 
-export default defineComponent({
-    name: 'BarraLateral',
-    emits: ['aoAlterarTema'],
-    data() {
-        return {
-            modoEscuroAtivo: true
-        }
-    },
-    computed: {
-        textoDoBotao() {
-            if (this.modoEscuroAtivo) {
+const modoEscuroAtivo = ref(true)
+
+const emits = defineEmits<{
+  (evento: 'aoAlterarTema', modoEscuroAtivo: boolean): void
+}>()
+
+function alterarTema(){
+    modoEscuroAtivo.value = !modoEscuroAtivo.value
+    emits('aoAlterarTema', modoEscuroAtivo.value)
+}
+
+const botao = reactive({
+    textoDoBotao(){
+        if (modoEscuroAtivo.value) {
                 return "Desativar modo escuro"
             }
 
             return "Ativar modo escuro"
-        }
-    },
-    methods: {
-        alterarTema() {
-            this.modoEscuroAtivo = !this.modoEscuroAtivo,
-                this.$emit('aoAlterarTema', this.modoEscuroAtivo)
-        }
     }
 })
+
+// export default defineComponent({
+//     name: 'BarraLateral',
+//     emits: ['aoAlterarTema'],
+//     data() {
+//         return {
+//             modoEscuroAtivo: true
+//         }
+//     },
+//     computed: {
+//         textoDoBotao() {
+//             if (this.modoEscuroAtivo) {
+//                 return "Desativar modo escuro"
+//             }
+
+//             return "Ativar modo escuro"
+//         }
+//     },
+//     methods: {
+//         alterarTema() {
+//             this.modoEscuroAtivo = !this.modoEscuroAtivo,
+//                 this.$emit('aoAlterarTema', this.modoEscuroAtivo)
+//         }
+//     }
+// })
 </script>
 
 <style scoped>

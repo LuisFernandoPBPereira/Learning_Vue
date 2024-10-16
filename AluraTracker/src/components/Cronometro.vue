@@ -4,22 +4,21 @@
     </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { reactive } from 'vue';
 
-export default defineComponent({
-    props:{
-        tempoEmSegundos: {
-            type: Number,
-            default: 0
-        }
-    },
-    computed:{
-            tempoDecorrido() : string{
-                return new Date(this.tempoEmSegundos * 1000).toISOString().substr(11, 8)
-            }
-        },
+const segundoEmMilisegundos : number = 1000;
+
+const props = defineProps<{
+    tempoEmSegundos?: number
+}>()
+
+const tempoDecorrido = computed(() => {
+    const tempo = props.tempoEmSegundos ?? 0;
+    return new Date(tempo * segundoEmMilisegundos).toISOString().substr(11, 8);
 })
+
 </script>
 
 <style>

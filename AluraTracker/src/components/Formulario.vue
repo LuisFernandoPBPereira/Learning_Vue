@@ -8,7 +8,7 @@
                 <div class="select">
                     <select v-model="idProjeto">
                         <option value="">Selecione o projeto</option>
-                        <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
+                        <option :value="projeto.id" v-for="projeto in storeProjetos" :key="projeto.id">
                             {{ projeto.nome }}
                         </option>
                     </select>
@@ -21,41 +21,35 @@
     </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script setup lang="ts">
 import Temporizador from './Temporizador.vue';
 import { useStore } from 'vuex'
 import { key } from "@/store"
+import { ref } from 'vue';
+import { reactive } from 'vue';
+import type { Ref } from 'vue';
+import type ITarefa from '@/interfaces/ITarefa';
 
-export default defineComponent({
-    name: 'Formulario',
-    emits: ['aoSalvarTarefa'],
-    components: {
-        Temporizador
-    },
-    data() {
-        return {
-            descricao: '',
-            idProjeto: ''
-        }
-    },
-    methods: {
-        finalizarTarefa(tempoDecorrido: number): void {
-            this.$emit('aoSalvarTarefa', {
-                duracaoEmSegundos: tempoDecorrido,
-                descricao: this.descricao,
-                projeto: this.projetos.find(proj => proj.id == this.idProjeto)
-            })
-            this.descricao = '';
-        }
-    },
-    setup() {
-        const store = useStore(key)
-        return {
-            projetos: computed(() => store.state.projetos)
-        }
-    }
+const descricao = ref("")
+const idProjeto = ref("")
+
+const store = useStore(key)
+const storeProjetos = reactive({
+    projetos: store.state.projetos
 })
+
+const emits = defineEmits<{
+    (evento: 'aoSalvarTarefa', tarefa: ITarefa) : void
+}>() 
+
+function finalizarTarefa(tempoDecorrido : number) : void{
+    emits('aoSalvarTarefa', {
+        duracaoEmSegundos: tempoDecorrido,
+        descricao: descricao.value,
+        projeto: store.projetos.find((proj: { id: Ref<string, string>; }) => proj.id == idProjeto)
+    })
+    
+}
 </script>
 
 <style>

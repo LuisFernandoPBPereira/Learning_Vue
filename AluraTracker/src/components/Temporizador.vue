@@ -14,39 +14,30 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import Cronometro from './Cronometro.vue';
 import Botao from './Botao.vue';
-import type ITemporizador from '@/interfaces/ITemporizador';
+import { ref } from 'vue';
 
-export default defineComponent({
-    name: 'Temporizador',
-    emits: ['aoFinalizarTemporizador'],
-    components: {
-        Cronometro,
-        Botao
-    },
-    data() : ITemporizador{
-        return {
-            tempoEmSegundos: 0,
-            cronometro: 0,
-            cronometroDisparado: false
-        }
-    },
-    methods: {
-        iniciar() : void{
-            this.cronometroDisparado = true;
-            this.cronometro = setInterval(() => {
-                this.tempoEmSegundos++;
-            }, 1000);
-        },
-        finalizar() : void{
-            this.cronometroDisparado = false;
-            clearInterval(this.cronometro);
-            this.$emit('aoFinalizarTemporizador', this.tempoEmSegundos);
-            this.tempoEmSegundos = 0;
-        }
-    }
-})
+const tempoEmSegundos = ref(0)
+let cronometro : number = 0;
+const cronometroDisparado = ref(false)
+
+const emits = defineEmits<{
+    (evento: 'aoFinalizarTemporizador', tempoEmSegundos : number) : void;
+}>()
+
+function iniciar() : void{
+    cronometroDisparado.value = true;
+    cronometro = setInterval(() => {
+      tempoEmSegundos.value++;
+    }, 1000);
+}
+
+function finalizar() : void{
+    cronometroDisparado.value = false;
+    clearInterval(cronometro);
+    emits('aoFinalizarTemporizador', tempoEmSegundos.value);
+    tempoEmSegundos.value = 0;
+}
 </script>

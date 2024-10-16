@@ -8,28 +8,20 @@
                 {{ tarefa?.projeto?.nome || 'N/D' }}
             </div>
             <div class="column">
-                <Cronometro :tempoEmSegundos="tarefa?.duracaoEmSegundos"/>
+                <Cronometro :tempoEmSegundos="props.tarefa?.duracaoEmSegundos"/>
             </div>
         </div>
     </div>
 </template>
 
-<script lang="ts">
-import { type PropType, defineComponent } from 'vue';
+<script setup lang="ts">
 import Cronometro from './Cronometro.vue';
 import type ITarefa from '../interfaces/ITarefa';
 
-export default defineComponent({
-    name: 'Tarefa',
-    components:{
-        Cronometro
-    },
-    props:{
-        tarefa: {
-            type: Object as PropType<ITarefa>
-        }
-    }
-})
+const props = defineProps<{
+    tarefa?: ITarefa
+}>()
+
 </script>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
     <div class="notificacoes">
-        <article class="message" :class="contexto[notificacao.tipo]" v-for="notificacao in notificacoes" :key="notificacao.id">
+        <article class="message" :class="tiposNotificacoes[notificacao.tipo]" v-for="notificacao in notificacoes" :key="notificacao.id">
             <div class="message-header">
                 {{ notificacao.titulo }}
             </div>
@@ -11,30 +11,22 @@
     </div>
 </template>
 
-<script lang="ts">
-import { TipoNotificacao } from '@/interfaces/INotificacao';
+<script setup lang="ts">
+import { TipoNotificacao, type INotificacao } from '@/interfaces/INotificacao';
 import { useStore } from '@/store';
 import { computed } from 'vue';
-import { defineComponent } from 'vue';
 
-export default defineComponent({
-    name: "Notificacoes",
-    data(){
-        return{
-            contexto: {
-                [TipoNotificacao.SUCESSO]: 'is-success',
-                [TipoNotificacao.ATENCAO]: 'is-warning',
-                [TipoNotificacao.FALHA]: 'is-danger',
-            }
-        }
-    },
-    setup() {
-        const store = useStore()
-        return{
-            notificacoes: computed(() => store.state.notificacoes)
-        }
-    },
-})
+const tiposNotificacoes : Record<TipoNotificacao, string>  = {
+    [TipoNotificacao.SUCESSO]: 'is-success',
+    [TipoNotificacao.ATENCAO]: 'is-warning',
+    [TipoNotificacao.FALHA]: 'is-danger',
+}
+
+const store = useStore()
+const notificacoes = computed<INotificacao[]>(() => {
+    return store.state.notificacoes
+});
+
 </script>
 
 <style scoped>
