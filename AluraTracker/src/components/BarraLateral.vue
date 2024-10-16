@@ -51,31 +51,6 @@ const botao = reactive({
             return "Ativar modo escuro"
     }
 })
-
-// export default defineComponent({
-//     name: 'BarraLateral',
-//     emits: ['aoAlterarTema'],
-//     data() {
-//         return {
-//             modoEscuroAtivo: true
-//         }
-//     },
-//     computed: {
-//         textoDoBotao() {
-//             if (this.modoEscuroAtivo) {
-//                 return "Desativar modo escuro"
-//             }
-
-//             return "Ativar modo escuro"
-//         }
-//     },
-//     methods: {
-//         alterarTema() {
-//             this.modoEscuroAtivo = !this.modoEscuroAtivo,
-//                 this.$emit('aoAlterarTema', this.modoEscuroAtivo)
-//         }
-//     }
-// })
 </script>
 
 <style scoped>

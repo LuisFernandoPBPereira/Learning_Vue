@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { reactive } from 'vue';
 
 const segundoEmMilisegundos : number = 1000;
 
