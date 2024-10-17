@@ -1,6 +1,6 @@
 <template>
     <div class="notificacoes">
-        <article class="message" :class="tiposNotificacoes[notificacao.tipo]" v-for="notificacao in notificacoes" :key="notificacao.id">
+        <article class="message" :class="tiposNotificacoes[notificacao.tipo]" v-for="notificacao in notificacoes.notificacoes" :key="notificacao.id">
             <div class="message-header">
                 {{ notificacao.titulo }}
             </div>
@@ -23,9 +23,6 @@ const tiposNotificacoes : Record<TipoNotificacao, string>  = {
 
 const store = useStore()
 const {notificacoes} = storeToRefs(store)
-// const notificacoes = computed<INotificacao[]>(() => {
-//     return store.notificacoes
-// });
 
 </script>
 

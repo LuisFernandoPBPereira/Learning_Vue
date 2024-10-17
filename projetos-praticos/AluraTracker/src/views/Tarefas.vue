@@ -12,8 +12,12 @@ import Formulario from '../components/Formulario.vue'
 import Tarefa from '../components/Tarefa.vue'
 import type ITarefa from '../interfaces/ITarefa'
 import { ref } from 'vue';
+import { useStore } from '@/store';
 
 let tarefas = ref([] as ITarefa[]);
+const store = useStore();
+
+store.obterProjetos()
 
 function salvarTarefa(tarefa: ITarefa) {
     if (tarefa.descricao !== '') {

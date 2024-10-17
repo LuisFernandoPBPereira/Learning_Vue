@@ -6,10 +6,9 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 
 export const useProjetoStore = defineStore('projeto', () => {
-  // const projetos = ref<IProjeto[]>([]);
   const projetosReativos = reactive({projetos: <IProjeto[]>[] });
-  const tarefas = ref<ITarefa[]>([]);
-  const notificacoes =ref<INotificacao[]>([]);
+  const tarefasReativas = reactive({tarefas: <ITarefa[]>[] });
+  const notificacoesReativas = reactive({notificacoes: <INotificacao[]>[]});
   
   async function obterProjetos(){
     const resposta = await http.get('projetos');
@@ -34,15 +33,15 @@ export const useProjetoStore = defineStore('projeto', () => {
 
   async function obterTarefas() {
     const resposta = await http.get('tarefas');
-    tarefas.value = resposta.data;
+    tarefasReativas.tarefas = resposta.data;
   }
 
   function notificar(novaNotificacao:INotificacao) {
     novaNotificacao.id = new Date().getTime();
-    notificacoes.value.push(novaNotificacao);
+    notificacoesReativas.notificacoes.push(novaNotificacao);
 
     setTimeout(() => {
-      notificacoes.value = notificacoes.value.filter(
+      notificacoesReativas.notificacoes = notificacoesReativas.notificacoes.filter(
         (notificacao) => notificacao.id !== novaNotificacao.id
       );
     }, 3000);
@@ -73,7 +72,7 @@ export const useProjetoStore = defineStore('projeto', () => {
   }
 
   function definirTarefas(tarefasDefinidas:ITarefa[]) {
-    tarefas.value = tarefasDefinidas;
+    tarefasReativas.tarefas = tarefasDefinidas;
   }
 
   return{
@@ -84,8 +83,8 @@ export const useProjetoStore = defineStore('projeto', () => {
     cadastrarProjeto,
     obterProjetos,
     projetosReativos,
-    tarefas,
-    notificacoes,
+    tarefas: tarefasReativas,
+    notificacoes: notificacoesReativas,
     definirTarefas,
     definirProjetos,
     excluirProjeto,

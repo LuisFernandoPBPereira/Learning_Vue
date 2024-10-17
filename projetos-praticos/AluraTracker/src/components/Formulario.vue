@@ -46,7 +46,9 @@ function finalizarTarefa(tempoDecorrido : number) : void{
         descricao: descricao.value,
         projeto: projetoEscolhido
     })
-    
+
+    descricao.value = ''
+    idProjeto.value = ''
 }
 </script>
 
