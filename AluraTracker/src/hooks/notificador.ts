@@ -1,5 +1,5 @@
-import type { TipoNotificacao } from "@/interfaces/INotificacao"
-import { store } from "@/store"
+import type { INotificacao, TipoNotificacao } from "@/interfaces/INotificacao"
+import { useStore } from "@/store"
 import { NOTIFICAR } from "@/store/tipo-mutacoes"
 
 type Notificador = {
@@ -7,12 +7,10 @@ type Notificador = {
 }
 
 export default () : Notificador => {
+    const store = useStore()
+    
     const notificar = (tipo: TipoNotificacao, titulo: string, texto: string) : void =>{
-        store.commit(NOTIFICAR, {
-            titulo: titulo,
-            texto: texto,
-            tipo: tipo
-        })
+        store.notificar({titulo, texto, tipo} as INotificacao)
     }
 
     return{

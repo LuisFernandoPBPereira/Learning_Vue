@@ -44,13 +44,13 @@ import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acoes';
 import type IProjeto from '@/interfaces/IProjeto';
 
 const store = useStore()
-store.dispatch(OBTER_PROJETOS);
+store.obterProjetos();
 
 const projetos = computed<IProjeto[]>(() => {
-    return store.state.projetos;
+    return store.projetos;
 })
 
 function excluir(projetoId: string){
-    store.dispatch(REMOVER_PROJETO, projetoId);
+    store.removerProjeto(projetoId);
 }
 </script>

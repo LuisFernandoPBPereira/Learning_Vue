@@ -24,7 +24,7 @@ const tiposNotificacoes : Record<TipoNotificacao, string>  = {
 
 const store = useStore()
 const notificacoes = computed<INotificacao[]>(() => {
-    return store.state.notificacoes
+    return store.notificacoes
 });
 
 </script>

@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { defineComponent } from 'vue';
 import { useStore } from '@/store'
-import { TipoNotificacao } from '@/interfaces/INotificacao';
+import { TipoNotificacao, type INotificacao } from '@/interfaces/INotificacao';
 import useNotificador from '@/hooks/notificador'
 import { CADASTRAR_PROJETOS, ALTERAR_PROJETO } from '@/store/tipo-acoes';
 import { onMounted } from 'vue';
@@ -40,25 +40,25 @@ const { notificar } = useNotificador()
 
 onMounted(() => {
     if (props.id) {
-        const projeto = store.state.projetos.find((proj: { id: string }) => proj.id == props.id)
+        const projeto = store.projetos.find((proj: { id: string }) => proj.id == props.id)
         nomeDoProjeto.value = projeto?.nome || ''
     }
 })
 
 function salvar() {
     if (props.id) {
-        store.dispatch(ALTERAR_PROJETO, { id: props.id, nome: nomeDoProjeto.value })
+        store.alterarProjeto({ id: props.id, nome: nomeDoProjeto.value })
             .then(() => lidarComSucesso())
     }
     else {
-        store.dispatch(CADASTRAR_PROJETOS, nomeDoProjeto.value)
+        store.cadastrarProjeto(nomeDoProjeto.value)
             .then(() => lidarComSucesso())
     }
 }
 
 function lidarComSucesso() {
     nomeDoProjeto.value = ''
-    notificar(TipoNotificacao.SUCESSO, "Sucesso", "Projeto salvo!")
+    store.notificar({tipo: TipoNotificacao.SUCESSO, titulo: "Sucesso", texto: "Projeto salvo!"} as INotificacao)
     router.push('/projetos');
 }
 </script>
