@@ -23,3 +23,5 @@ function iniciar() : void{
 
 Usamos <code>ref()</code> para o <code>tempoEmSegundos</code> que é um inteiro, e para o <code>cronometroDisparado</code> que é um booleano.
 Seus valores mudam toda vez que a função iniciar é chamada, em especial o <code>tempoEmSegundos</code> que muda a cada segundo no <code>setInterval()</code>.
+
+Podemos acessar o valor de um `ref()` usando `.value`, como em `tempoEmSegundos.value`.
