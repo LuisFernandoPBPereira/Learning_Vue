@@ -19,11 +19,9 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent } from 'vue';
 import { useStore } from '@/store'
-import { TipoNotificacao, type INotificacao } from '@/interfaces/INotificacao';
+import { TipoNotificacao } from '@/interfaces/INotificacao';
 import useNotificador from '@/hooks/notificador'
-import { CADASTRAR_PROJETOS, ALTERAR_PROJETO } from '@/store/tipo-acoes';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -58,7 +56,7 @@ function salvar() {
 
 function lidarComSucesso() {
     nomeDoProjeto.value = ''
-    store.notificar({tipo: TipoNotificacao.SUCESSO, titulo: "Sucesso", texto: "Projeto salvo!"} as INotificacao)
+    notificar(TipoNotificacao.SUCESSO, "Sucesso", "Projeto salvo!")
     router.push('/projetos');
 }
 </script>

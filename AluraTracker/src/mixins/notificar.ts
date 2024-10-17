@@ -1,15 +1,16 @@
-import type { TipoNotificacao } from "@/interfaces/INotificacao"
-import { store } from "@/store"
-import { NOTIFICAR } from "@/store/tipo-mutacoes"
+import type { INotificacao, TipoNotificacao } from "@/interfaces/INotificacao"
+import { useStore } from "@/store"
+const store = useStore() 
 
-export const notificacaoMixin = {
-    methods: {
-        notificar(tipo: TipoNotificacao, titulo: string, texto: string){
-            store.commit(NOTIFICAR, {
-                titulo: titulo,
-                texto: texto,
-                tipo: tipo
-            })
-        }
-    }
+function notificar(tipo: TipoNotificacao, titulo: string, texto: string){
+    store.notificar({titulo: titulo,texto: texto,tipo: tipo} as INotificacao);
 }
+
+// export const notificacaoMixin = {
+//     methods: {
+//         notificar(tipo: TipoNotificacao, titulo: string, texto: string){
+//         }
+//     }
+// }
+
+export default notificar;

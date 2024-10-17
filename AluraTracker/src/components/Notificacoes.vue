@@ -12,10 +12,9 @@
 </template>
 
 <script setup lang="ts">
-import { TipoNotificacao, type INotificacao } from '@/interfaces/INotificacao';
+import { TipoNotificacao } from '@/interfaces/INotificacao';
 import { useStore } from '@/store';
-import { computed } from 'vue';
-
+import {storeToRefs} from 'pinia'
 const tiposNotificacoes : Record<TipoNotificacao, string>  = {
     [TipoNotificacao.SUCESSO]: 'is-success',
     [TipoNotificacao.ATENCAO]: 'is-warning',
@@ -23,9 +22,10 @@ const tiposNotificacoes : Record<TipoNotificacao, string>  = {
 }
 
 const store = useStore()
-const notificacoes = computed<INotificacao[]>(() => {
-    return store.notificacoes
-});
+const {notificacoes} = storeToRefs(store)
+// const notificacoes = computed<INotificacao[]>(() => {
+//     return store.notificacoes
+// });
 
 </script>
 

@@ -3,59 +3,96 @@ import type { INotificacao } from "@/interfaces/INotificacao";
 import http from "@/http"
 import type ITarefa from "@/interfaces/ITarefa";
 import { defineStore } from "pinia";
+import { reactive, ref } from "vue";
 
-export const useProjetoStore = defineStore('projeto', {
-    state: () => ({
-      projetos: [] as IProjeto[],
-      tarefas: [] as ITarefa[],
-      notificacoes: [] as INotificacao[],
-    }),
+export const useProjetoStore = defineStore('projeto', () => {
+  const projetos = ref<IProjeto[]>([]);
+  const tarefas = ref<ITarefa[]>([]);
+  const notificacoes =ref<INotificacao[]>([]);
   
-    actions: {
-      // Ação para buscar projetos
-      async obterProjetos() {
-        const resposta = await http.get('projetos');
-        this.projetos = resposta.data;
-      },
-  
-      // Ação para cadastrar um novo projeto
-      async cadastrarProjeto(nomeDoProjeto: string) {
-        await http.post('/projetos', { nome: nomeDoProjeto });
-        this.obterProjetos(); // Atualiza a lista após cadastrar
-      },
-  
-      // Ação para alterar um projeto existente
-      async alterarProjeto(projeto: IProjeto) {
-        await http.put(`/projetos/${projeto.id}`, projeto);
-        this.obterProjetos(); // Atualiza a lista após alterar
-      },
-  
-      // Ação para remover um projeto
-      async removerProjeto(idProjeto: string) {
-        await http.delete(`/projetos/${idProjeto}`);
-        this.projetos = this.projetos.filter(proj => proj.id !== idProjeto);
-      },
-  
-      // Ação para buscar tarefas
-      async obterTarefas() {
-        const resposta = await http.get('tarefas');
-        this.tarefas = resposta.data;
-      },
-  
-      // Ação para adicionar uma notificação
-      notificar(novaNotificacao: INotificacao) {
-        novaNotificacao.id = new Date().getTime();
-        this.notificacoes.push(novaNotificacao);
-  
-        // Remover a notificação após 3 segundos
-        setTimeout(() => {
-          this.notificacoes = this.notificacoes.filter(
-            (notificacao) => notificacao.id !== novaNotificacao.id
-          );
-        }, 3000);
-      },
-    },
-  });
+  async function obterProjetos(){
+    const resposta = await http.get('projetos');
+    projetos.value = resposta.data;
+
+  }
+
+  async function cadastrarProjeto(nomeDoProjeto: string){
+    await http.post('/projetos', { nome: nomeDoProjeto });
+    obterProjetos(); // Atualiza a lista após cadastrar
+  }
+
+  async function alterarProjeto(projeto:IProjeto) {
+    await http.put(`/projetos/${projeto.id}`, projeto);
+    obterProjetos(); // Atualiza a lista após alterar
+  }
+
+  async function removerProjeto(idProjeto:string) {
+    await http.delete(`/projetos/${idProjeto}`);
+    projetos.value = projetos.value.filter(proj => proj.id !== idProjeto);
+  }
+
+  async function obterTarefas() {
+    const resposta = await http.get('tarefas');
+    tarefas.value = resposta.data;
+  }
+
+  function notificar(novaNotificacao:INotificacao) {
+    novaNotificacao.id = new Date().getTime();
+    notificacoes.value.push(novaNotificacao);
+
+    setTimeout(() => {
+      notificacoes.value = notificacoes.value.filter(
+        (notificacao) => notificacao.id !== novaNotificacao.id
+      );
+    }, 3000);
+  }
+
+  function adicionarProjeto(nomeDoProjeto : string){
+    const projeto = {
+      id: new Date().toISOString(),
+      nome: nomeDoProjeto,
+    } as IProjeto;
+    
+    projetos.value.push(projeto);
+  }
+
+  function alterarProjetoLocal(projeto:IProjeto) {
+    const index = projetos.value.findIndex((proj) => proj.id === projeto.id);
+    if (index !== -1) {
+      projetos.value[index] = projeto;
+    }    
+  }
+
+  function excluirProjeto(projetoId:string) {
+    projetos.value = projetos.value.filter((proj) => proj.id !== projetoId);    
+  }
+
+  function definirProjetos(projetosDefinidos:IProjeto[]) {
+    projetos.value = projetosDefinidos;
+  }
+
+  function definirTarefas(tarefasDefinidas:ITarefa[]) {
+    tarefas.value = tarefasDefinidas;
+  }
+
+  return{
+    notificar,
+    obterTarefas,
+    removerProjeto,
+    alterarProjeto,
+    cadastrarProjeto,
+    obterProjetos,
+    projetos,
+    tarefas,
+    notificacoes,
+    definirTarefas,
+    definirProjetos,
+    excluirProjeto,
+    alterarProjetoLocal,
+    adicionarProjeto
+  }
+
+});
 
 export function useStore(){
     return useProjetoStore();

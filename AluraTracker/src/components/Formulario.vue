@@ -8,7 +8,7 @@
                 <div class="select">
                     <select v-model="idProjeto">
                         <option value="">Selecione o projeto</option>
-                        <option :value="projeto.id" v-for="projeto in storeProjetos.projetos" :key="projeto.id">
+                        <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
                             {{ projeto.nome }}
                         </option>
                     </select>
@@ -25,25 +25,20 @@
 import Temporizador from './Temporizador.vue';
 import { useStore } from "@/store"
 import { ref } from 'vue';
-import { reactive } from 'vue';
-import type { Ref } from 'vue';
 import type ITarefa from '@/interfaces/ITarefa';
 import type IProjeto from '@/interfaces/IProjeto';
 
 const descricao = ref("")
 const idProjeto = ref("")
 
-const store = useStore()
-const storeProjetos = reactive({
-    projetos: store.projetos
-})
+const {projetos} = useStore()
 
 const emits = defineEmits<{
     (evento: 'aoSalvarTarefa', tarefa: ITarefa) : void
 }>() 
 
 function finalizarTarefa(tempoDecorrido : number) : void{
-    const projetoEscolhido = storeProjetos.projetos.find((proj: { id: string }) => proj.id === idProjeto.value) as IProjeto
+    const projetoEscolhido = projetos.find((proj: { id: string }) => proj.id === idProjeto.value) as IProjeto
     
     emits('aoSalvarTarefa', {
         duracaoEmSegundos: tempoDecorrido,
