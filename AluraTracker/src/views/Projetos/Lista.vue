@@ -37,28 +37,20 @@
     </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import { useStore } from '@/store'
 import { computed } from 'vue';
-import { EXCLUIR_PROJETO } from '@/store/tipo-mutacoes';
 import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acoes';
+import type IProjeto from '@/interfaces/IProjeto';
 
-export default defineComponent({
-    name: 'Lista',
-    methods:{
-        excluir(projetoId: string){
-            this.store.dispatch(REMOVER_PROJETO, projetoId)
-        }
-    },
-    setup(){
-        const store = useStore()
-        store.dispatch(OBTER_PROJETOS)
-        return {
-            projetos: computed(() => store.state.projetos),
-            store
-        }
-    }
+const store = useStore()
+store.dispatch(OBTER_PROJETOS);
+
+const projetos = computed<IProjeto[]>(() => {
+    return store.state.projetos;
 })
 
+function excluir(projetoId: string){
+    store.dispatch(REMOVER_PROJETO, projetoId);
+}
 </script>
