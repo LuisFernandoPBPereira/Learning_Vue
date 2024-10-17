@@ -40,14 +40,13 @@
 <script setup lang="ts">
 import { useStore } from '@/store'
 import { computed } from 'vue';
-import { OBTER_PROJETOS, REMOVER_PROJETO } from '@/store/tipo-acoes';
 import type IProjeto from '@/interfaces/IProjeto';
 
 const store = useStore()
 store.obterProjetos();
 
 const projetos = computed<IProjeto[]>(() => {
-    return store.projetos;
+    return store.projetosReativos.projetos;
 })
 
 function excluir(projetoId: string){

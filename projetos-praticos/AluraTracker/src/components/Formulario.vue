@@ -8,7 +8,7 @@
                 <div class="select">
                     <select v-model="idProjeto">
                         <option value="">Selecione o projeto</option>
-                        <option :value="projeto.id" v-for="projeto in projetos" :key="projeto.id">
+                        <option :value="projeto.id" v-for="projeto in store.projetosReativos.projetos" :key="projeto.id">
                             {{ projeto.nome }}
                         </option>
                     </select>
@@ -31,14 +31,15 @@ import type IProjeto from '@/interfaces/IProjeto';
 const descricao = ref("")
 const idProjeto = ref("")
 
-const {projetos} = useStore()
+const store = useStore()
 
 const emits = defineEmits<{
     (evento: 'aoSalvarTarefa', tarefa: ITarefa) : void
 }>() 
 
 function finalizarTarefa(tempoDecorrido : number) : void{
-    const projetoEscolhido = projetos.find((proj: { id: string }) => proj.id === idProjeto.value) as IProjeto
+    
+    const projetoEscolhido = store.projetosReativos.projetos.find((proj: { id: string }) => proj.id === idProjeto.value) as IProjeto
     
     emits('aoSalvarTarefa', {
         duracaoEmSegundos: tempoDecorrido,

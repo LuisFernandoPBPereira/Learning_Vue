@@ -6,29 +6,30 @@ import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
 
 export const useProjetoStore = defineStore('projeto', () => {
-  const projetos = ref<IProjeto[]>([]);
+  // const projetos = ref<IProjeto[]>([]);
+  const projetosReativos = reactive({projetos: <IProjeto[]>[] });
   const tarefas = ref<ITarefa[]>([]);
   const notificacoes =ref<INotificacao[]>([]);
   
   async function obterProjetos(){
     const resposta = await http.get('projetos');
-    projetos.value = resposta.data;
+    projetosReativos.projetos = resposta.data;
 
   }
 
   async function cadastrarProjeto(nomeDoProjeto: string){
     await http.post('/projetos', { nome: nomeDoProjeto });
-    obterProjetos(); // Atualiza a lista após cadastrar
+    obterProjetos();
   }
 
   async function alterarProjeto(projeto:IProjeto) {
     await http.put(`/projetos/${projeto.id}`, projeto);
-    obterProjetos(); // Atualiza a lista após alterar
+    obterProjetos();
   }
 
   async function removerProjeto(idProjeto:string) {
     await http.delete(`/projetos/${idProjeto}`);
-    projetos.value = projetos.value.filter(proj => proj.id !== idProjeto);
+    projetosReativos.projetos = projetosReativos.projetos.filter(proj => proj.id !== idProjeto);
   }
 
   async function obterTarefas() {
@@ -53,22 +54,22 @@ export const useProjetoStore = defineStore('projeto', () => {
       nome: nomeDoProjeto,
     } as IProjeto;
     
-    projetos.value.push(projeto);
+    projetosReativos.projetos.push(projeto);
   }
 
   function alterarProjetoLocal(projeto:IProjeto) {
-    const index = projetos.value.findIndex((proj) => proj.id === projeto.id);
+    const index = projetosReativos.projetos.findIndex((proj) => proj.id === projeto.id);
     if (index !== -1) {
-      projetos.value[index] = projeto;
+      projetosReativos.projetos[index] = projeto;
     }    
   }
 
   function excluirProjeto(projetoId:string) {
-    projetos.value = projetos.value.filter((proj) => proj.id !== projetoId);    
+    projetosReativos.projetos = projetosReativos.projetos.filter((proj) => proj.id !== projetoId);    
   }
 
   function definirProjetos(projetosDefinidos:IProjeto[]) {
-    projetos.value = projetosDefinidos;
+    projetosReativos.projetos = projetosDefinidos;
   }
 
   function definirTarefas(tarefasDefinidas:ITarefa[]) {
@@ -82,7 +83,7 @@ export const useProjetoStore = defineStore('projeto', () => {
     alterarProjeto,
     cadastrarProjeto,
     obterProjetos,
-    projetos,
+    projetosReativos,
     tarefas,
     notificacoes,
     definirTarefas,
